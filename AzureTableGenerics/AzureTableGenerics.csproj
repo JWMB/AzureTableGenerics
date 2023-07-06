@@ -4,7 +4,8 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <UserSecretsId>790e137d-4dcc-471b-b4ef-27bace989c05</UserSecretsId>
-	<VersionPrefix>0.0.1</VersionPrefix>
+	  <VersionPrefix>0.0.1</VersionPrefix>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
