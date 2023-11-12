@@ -52,7 +52,7 @@ namespace AzureTableGenerics
                 {
                     if (val is string str)
                     {
-                        val = JsonConvert.DeserializeObject(str, prop.PropertyType);
+                        val = JsonConvert.DeserializeObject(str, prop.PropertyType, jsonSerializerSettings);
                     }
                     else
                     {
