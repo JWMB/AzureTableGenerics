@@ -48,12 +48,14 @@ namespace AzureTableGenerics
                     continue;
                 }
 
-                if (IsNativelySupportedTypeOrNullable(prop.PropertyType) == false)
+                if (IsNativelySupportedType(prop.PropertyType) == false)
                 {
                     if (val is string str)
                     {
                         val = JsonConvert.DeserializeObject(str, prop.PropertyType, jsonSerializerSettings);
                     }
+                    else if (IsNullableNativelySupportedType(prop.PropertyType))
+                    { }
                     else
                     {
                         throw new Exception($"Unhandled type ({prop.Name}/{prop.PropertyType.Name}): ({val}) '{val?.GetType().Name}'");
@@ -128,10 +130,8 @@ namespace AzureTableGenerics
 
         private static string GetExpandedName(string propertyName, int index) => $"{propertyName}__{index}";
 
-        private static bool IsNativelySupportedTypeOrNullable(Type type)
+        private static bool IsNullableNativelySupportedType(Type type)
         {
-            if (IsNativelySupportedType(type))
-                return true;
             var underlyingNonNullable = Nullable.GetUnderlyingType(type);
             if (underlyingNonNullable != null && IsNativelySupportedType(underlyingNonNullable))
                 return true; // Azure tables don't support nullable types

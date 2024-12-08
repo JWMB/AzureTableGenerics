@@ -1,7 +1,7 @@
-name: Build and deploy .NET Core application to Function App kialertslackconvert
+name: Build and publish nuget package
 on:
   push:
-    branches: [ "main", "release/**", "release" ]
+    branches: [ "release/**", "release" ]
   workflow_dispatch:
 env:
   CONFIGURATION: Release

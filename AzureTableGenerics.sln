@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTableGenerics", "AzureTableGenerics\AzureTableGenerics.csproj", "{D1C6E448-0443-41BD-846F-E35FE5BFF929}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{0A1AEF03-9346-4D4E-B32A-DCEAAA12F519}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D1C6E448-0443-41BD-846F-E35FE5BFF929}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1C6E448-0443-41BD-846F-E35FE5BFF929}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1C6E448-0443-41BD-846F-E35FE5BFF929}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A1AEF03-9346-4D4E-B32A-DCEAAA12F519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1AEF03-9346-4D4E-B32A-DCEAAA12F519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1AEF03-9346-4D4E-B32A-DCEAAA12F519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1AEF03-9346-4D4E-B32A-DCEAAA12F519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
