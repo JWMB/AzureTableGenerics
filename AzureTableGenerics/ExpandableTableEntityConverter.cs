@@ -13,21 +13,23 @@ namespace AzureTableGenerics
         private static readonly string expandedColumnListPropertyName = "__ExpandedColumns";
 
         private readonly Func<T, TableFilter> idFunc;
-        
-        public ExpandableTableEntityConverter(Func<T, TableFilter> idFunc)
+        private readonly JsonSerializerSettings? jsonSerializerSettings;
+
+        public ExpandableTableEntityConverter(Func<T, TableFilter> idFunc, JsonSerializerSettings? jsonSerializerSettings = null)
         {
             this.idFunc = idFunc;
+            this.jsonSerializerSettings = jsonSerializerSettings;
         }
 
-        public T ToPoco(TableEntity entity) => ToPocoStatic(entity);
-        public TableEntity FromPoco(T obj) => FromPoco(obj, idFunc);
+        public T ToPoco(TableEntity entity) => ToPocoStatic(entity, jsonSerializerSettings);
+        public TableEntity FromPoco(T obj) => FromPoco(obj, idFunc, jsonSerializerSettings);
 
 
-        public static T ToPocoStatic(TableEntity entity)
+        public static T ToPocoStatic(TableEntity entity, JsonSerializerSettings? jsonSerializerSettings = null)
         {
             var poco = new T();
             var expandedRaw = entity[expandedColumnListPropertyName];
-            var expanded = expandedRaw == null ? null : JsonConvert.DeserializeObject<Dictionary<string, int>>(expandedRaw.ToString() ?? "");
+            var expanded = expandedRaw == null ? null : JsonConvert.DeserializeObject<Dictionary<string, int>>(expandedRaw.ToString() ?? "", jsonSerializerSettings);
 
             foreach (var prop in GetProps())
             {
@@ -50,7 +52,7 @@ namespace AzureTableGenerics
                 {
                     if (val is string str)
                     {
-                        val = JsonConvert.DeserializeObject(str, prop.PropertyType);
+                        val = JsonConvert.DeserializeObject(str, prop.PropertyType, jsonSerializerSettings);
                     }
                     else
                     {
@@ -64,7 +66,7 @@ namespace AzureTableGenerics
             return poco;
         }
 
-        public static TableEntity FromPoco(T obj, Func<T, TableFilter> idFunc)
+        public static TableEntity FromPoco(T obj, Func<T, TableFilter> idFunc, JsonSerializerSettings? jsonSerializerSettings = null)
         {
             var entity = new TableEntity();
 
@@ -74,7 +76,7 @@ namespace AzureTableGenerics
                 var value = prop.GetValue(obj);
                 if (IsNativelySupportedType(prop.PropertyType) == false)
                 {
-                    var serialized = JsonConvert.SerializeObject(value);
+                    var serialized = JsonConvert.SerializeObject(value, jsonSerializerSettings);
                     if (serialized.Length > maxLength)
                     {
                         // TODO: this could just as well apply to e.g. a string! Splitting should be common to both codepaths
@@ -106,7 +108,7 @@ namespace AzureTableGenerics
             }
 
             if (expandedProps.Any())
-                entity[expandedColumnListPropertyName] = JsonConvert.SerializeObject(expandedProps);
+                entity[expandedColumnListPropertyName] = JsonConvert.SerializeObject(expandedProps, jsonSerializerSettings);
 
             var id = idFunc(obj);
             entity.RowKey = id.Row;

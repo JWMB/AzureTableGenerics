@@ -1,12 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
+	<LangVersion>8.0</LangVersion>
     <UserSecretsId>790e137d-4dcc-471b-b4ef-27bace989c05</UserSecretsId>
-	  <VersionPrefix>0.0.1</VersionPrefix>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<VersionPrefix>0.0.5</VersionPrefix>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+	<PackageId>JWMB.$(AssemblyName)</PackageId>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageProjectUrl>https://github.com/JWMB/$(AssemblyName)</PackageProjectUrl>
+	<Title>$(AssemblyName)</Title>
+	<Authors>JWMB</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.8.0" />
