@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
 	<LangVersion>8.0</LangVersion>
     <UserSecretsId>790e137d-4dcc-471b-b4ef-27bace989c05</UserSecretsId>
-	<VersionPrefix>0.0.5</VersionPrefix>
+	<VersionPrefix>0.0.6-preview.1</VersionPrefix>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
 	<PackageId>JWMB.$(AssemblyName)</PackageId>
