@@ -13,7 +13,7 @@ namespace AzureTableGenerics
         private static readonly string expandedColumnListPropertyName = "__ExpandedColumns";
 
         private readonly Func<T, TableFilter> idFunc;
-
+        
         public ExpandableTableEntityConverter(Func<T, TableFilter> idFunc)
         {
             this.idFunc = idFunc;
@@ -46,7 +46,7 @@ namespace AzureTableGenerics
                     continue;
                 }
 
-                if (IsNativelySupportedType(prop.PropertyType) == false)
+                if (IsNativelySupportedTypeOrNullable(prop.PropertyType) == false)
                 {
                     if (val is string str)
                     {
@@ -54,7 +54,7 @@ namespace AzureTableGenerics
                     }
                     else
                     {
-                        throw new Exception($"Unhandled type ({prop.Name}/{prop.PropertyType.Name}): {val?.GetType().Name}");
+                        throw new Exception($"Unhandled type ({prop.Name}/{prop.PropertyType.Name}): ({val}) '{val?.GetType().Name}'");
                     }
                 }
 
@@ -93,11 +93,16 @@ namespace AzureTableGenerics
                 {
                     if (prop.PropertyType == typeof(DateTimeOffset))
                     {
+                        // https://learn.microsoft.com/en-us/rest/api/storageservices/Understanding-the-Table-Service-Data-Model#property-types
                         // TODO: probably DateTime as well
                         // TODO: min value cannot be before
                     }
                 }
-                entity[prop.Name] = value;
+
+                if (value == null)
+                    entity.Remove(prop.Name); // Azure tables can't store nulls
+                else
+                    entity[prop.Name] = value;
             }
 
             if (expandedProps.Any())
@@ -120,6 +125,16 @@ namespace AzureTableGenerics
         }
 
         private static string GetExpandedName(string propertyName, int index) => $"{propertyName}__{index}";
+
+        private static bool IsNativelySupportedTypeOrNullable(Type type)
+        {
+            if (IsNativelySupportedType(type))
+                return true;
+            var underlyingNonNullable = Nullable.GetUnderlyingType(type);
+            if (underlyingNonNullable != null && IsNativelySupportedType(underlyingNonNullable))
+                return true; // Azure tables don't support nullable types
+            return false;
+        }
 
         private static bool IsNativelySupportedType(Type type)
         {
