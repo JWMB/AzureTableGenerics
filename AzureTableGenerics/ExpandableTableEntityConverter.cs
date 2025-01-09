@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace AzureTableGenerics
 {
@@ -62,7 +63,25 @@ namespace AzureTableGenerics
                     }
                 }
 
-                prop.SetValue(poco, val);
+                try
+                {
+                    prop.SetValue(poco, val);
+                }
+                catch (Exception ex)
+                {
+                    //TODO: temp fix - why is it serialized with enclosing quotes when nullable?!
+                    if (ex is ArgumentException && prop.PropertyType.Name == "DateTimeOffset" && val is string str)
+                    {
+                        if (str.StartsWith("\""))
+                            prop.SetValue(poco, DateTimeOffset.Parse(str.Trim('"')));
+                        if (str == "null")
+                            prop.SetValue(poco, null);
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Could not set {typeof(T).Name}.{prop.Name} (type={prop.PropertyType.Name}) to ({val}) (type={val?.GetType().Name}) (IsNativelySupportedType={IsNativelySupportedType(prop.PropertyType)}) - {entity.PartitionKey}:{entity.RowKey}", ex);
+                    }
+                }
             }
 
             return poco;

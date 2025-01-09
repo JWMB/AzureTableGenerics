@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
 	<LangVersion>8.0</LangVersion>
     <UserSecretsId>790e137d-4dcc-471b-b4ef-27bace989c05</UserSecretsId>
-	<VersionPrefix>0.0.6-preview.2</VersionPrefix>
+	<VersionPrefix>0.0.6-preview.10</VersionPrefix>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
 	<PackageId>JWMB.$(AssemblyName)</PackageId>
