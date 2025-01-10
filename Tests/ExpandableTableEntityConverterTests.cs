@@ -3,7 +3,7 @@ using Shouldly;
 
 namespace Tests
 {
-    public class UnitTest1
+    public class ExpandableTableEntityConverterTests
     {
         [Theory]
         [InlineData("2024-12-08 20:24:04 +00:00")]
@@ -60,7 +60,6 @@ namespace Tests
             //catch (ArgumentException ex) { ex.Message.ShouldContain(entity["DateOffset"].ToString()); }
         }
 
-
         [Fact]
         public void Deserialize_Error()
         {
@@ -75,17 +74,5 @@ namespace Tests
 
             Should.Throw<Newtonsoft.Json.JsonReaderException>(() => sut.ToPoco(entity));
         }
-
-        public class PocoNullableDates
-        {
-            public DateTimeOffset? DateOffset { get; set; }
-            public DateTime? Date { get; set; }
-        }
-        public class PocoNonNullableDates
-        {
-            public DateTimeOffset DateOffset { get; set; }
-            public DateTime Date { get; set; }
-        }
-
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Azure.Data.Tables;
-//using ProblemSource.Services.Storage.AzureTables.TableEntities;
-//using ProblemSourceModule.Services.Storage;
 
 namespace AzureTableGenerics
 {
